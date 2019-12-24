@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Converter } from "../presentational/Converter.jsx";
+// import { start } from "repl";
 
 class Container extends Component {
     constructor(props) {
@@ -9,10 +10,11 @@ class Container extends Component {
         // this.handleCtoF = this.handleCtoF.bind(this);
         this.state = {
           // convert: Math.floor((32-32)*(5/9))
+          res: ''
         }
     }
 
-    getData = async e => {
+    getData = async (startdate, enddate) => {
       const dc = 'FIPS:11';
       const token = 'CsgMDhKauNyJczMlffoEibhLIPkiQXDj';
       // const url = `https://www.ncdc.noaa.gov/cdo-web/api/v2/datatypes?locationcategoryid=${dc}&datacategoryid=TEMP&limit=1000`;
@@ -38,34 +40,54 @@ class Container extends Component {
 
       if (dataset){
         console.log('getting data...')
-        const call = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${datatype.results[19].id}&datasetid=${dataset.results[0].id}&startdate=2019-01-01&enddate=2019-01-31&units=standard&limit=1000&datatype=PRCP`,
+        const call = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${datatype.results[19].id}&datasetid=${dataset.results[0].id}&startdate=${startdate}&enddate=${enddate}&units=standard&limit=1000&datatypeid=TOBS`,
           {
           headers :{
             token: token
           }
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
+      
         const data = await call.json();
         console.log('data', data, call);
+        // let results = 
+        this.setState({
+          res: data.results
+        })
       }
 
     }
 
     componentDidMount () {
-      this.getData();
+      this.getData('2018-01-01','2018-12-31');
     }
 
 
     render() {
+      const res = this.state.res;
+      console.log(res);
+      if (!this.state.res || res == undefined) {
+        return null; //You can change here to put a customized loading spinner
+      }
         return (
           <main>
             <h1>Convert Away!</h1>
+
             <Converter
               // handleFtoC={this.handleFtoC}
               // handleCtoF={this.handleCtoF}
               // convert={this.state.convert}
             />
-
+            <ul >
+            {res.map((r, i) => {
+              return(
+                
+              <li key={i}>{r.value}</li>
+            
+                ) 
+              })}
+          </ul>
+            
           </main>
 
         );
