@@ -22,37 +22,72 @@ export class Temperature extends Component {
       isSelected: handle
     })
   }
-  buildChart(dateArr, date, dataArr, data) {
-    // console.log(data);
-    dateArr.push(date);
-    dataArr.push(data);
-    // console.log(dataArr)
+  buildChart(dateArr, dataArr, compareArr, compareDate) {
+
+
+    this.props.value.map((temp, i) => {
+      let stringValue = temp.value.toString();
+      dateArr.push(temp.date);
+      dataArr.push(stringValue);
+    });
+
+    this.props.compare.map((comp, i) => {
+      let stringValue = comp.value.toString();
+      compareDate.push(comp.date);
+      compareArr.push(stringValue);
+    });
+
+
+
+
     const ctx = document.getElementById('temp-chart').getContext('2d');
     let chart = new Chart(ctx, {
       type: 'line',
       data: {
           labels: dateArr,
-          datasets: [{
-              label: 'Temp',
+          datasets: [
+            {
+              label: 'Temp 1958',
               data: dataArr,
+              
+            },
+            {
+              label: 'Temp 2018',
+              data: compareArr,
               backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
+                'rgba(255, 99, 132, .1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+
               ],
               borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+
               ],
               borderWidth: 1
-          }]
+            },
+            
+          ]
       },
       options: {
           scales: {
@@ -62,7 +97,8 @@ export class Temperature extends Component {
                       // stacked:true
                   }
               }]
-          }
+          },
+          events: ['click']
       }
   });
   }
@@ -71,18 +107,17 @@ export class Temperature extends Component {
     console.log('mount');
     let dataArr = [];
     let dateArr = [];
-    this.props.value.map((temp, i) => {
-      let stringValue = temp.value.toString();
-      this.buildChart(dateArr, temp.date, dataArr, stringValue);
-    })
+    let compareArr = [];
+    let compareDate = [];
+    this.buildChart(dateArr, dataArr, compareArr, compareDate);
     
   }
 
 render() {
   // console.log(window.chart);
   const isSelected = this.state.isSelected;
-  if(window.chart && window.chart !== null){
-    window.chart.destroy();
+  if(window.line && window.line !== null){
+    window.line.destroy();
 }
 
   const deg = <span>&#176;</span>; // degree symbol
