@@ -5,24 +5,14 @@ export class Temperature extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.state = {
-      isSelected: false,
-      isDisabled: true
-    }
+    // this.state = {
+    //   changeChart: false
+    // }
     
   }
 
-  handleChange() {
-    const isSelected = this.state.isSelected;
-    const handle = isSelected ? false : true
-    const number = document.getElementById('number');
-    number.value = "";
 
-    this.setState({
-      isSelected: handle
-    })
-  }
-  buildChart(dateArr, dataArr, compareArr, compareDate) {
+  buildChart(dateArr, dataArr, compareArr, compareDate, change = false) {
 
 
     this.props.value.map((temp, i) => {
@@ -44,47 +34,58 @@ export class Temperature extends Component {
     let chart = new Chart(ctx, {
       type: 'line',
       data: {
-          labels: dateArr,
+          labels: ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'],
           datasets: [
             {
               label: 'Temp 1958',
               data: dataArr,
+              fill:false,
+              backgroundColor: [
+                'black',
+                'black',
+                'black',
+                'black',
+                'black',
+                'black',
+                'black',
+                'black',
+                'black',
+                'black',
+                'black',
+                'black',
+
+              ],
+              borderColor: [
+                'black'
+
+              ],
+              borderWidth: 2
               
             },
             {
               label: 'Temp 2018',
               data: compareArr,
+              fill:false,
               backgroundColor: [
-                'rgba(255, 99, 132, .1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
+                'red',
+                'red',
+                'red',
+                'red',
+                'red',
+                'red',
+                'red',
+                'red',
+                'red',
+                'red',
+                'red',
+                'red',
 
               ],
               borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
+                'red'
 
               ],
-              borderWidth: 1
+              borderWidth: 2
             },
             
           ]
@@ -98,10 +99,33 @@ export class Temperature extends Component {
                   }
               }]
           },
-          events: ['click']
+          // events: ['onmouseover']
       }
-  });
+  }).resize();
+
+
+
+
+  // if(change === true) {
+  //   console.log('updating...')
+  //   chart.update();
+  // }
+
+
   }
+
+  handleChange =()=>{
+   this.props.onClick();
+    let dataArr = [];
+    let dateArr = [];
+    let compareArr = [];
+    let compareDate = [];
+
+      this.buildChart(dateArr, dataArr, compareArr, compareDate );
+
+    
+  }
+
 
   componentDidMount () {
     console.log('mount');
@@ -114,8 +138,6 @@ export class Temperature extends Component {
   }
 
 render() {
-  // console.log(window.chart);
-  const isSelected = this.state.isSelected;
   if(window.line && window.line !== null){
     window.line.destroy();
 }
@@ -125,7 +147,8 @@ render() {
 
     return (
       <div className="chart">
-        <canvas id="temp-chart" width="500" height="500"></canvas>
+        <button onClick={this.handleChange}>Change Chart</button>
+        <canvas id="temp-chart" width="200" height="200"></canvas>
       </div>
 
     );

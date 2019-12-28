@@ -11,11 +11,12 @@ class Container extends Component {
         this.state = {
           // convert: Math.floor((32-32)*(5/9))
           res: '',
-          compare: ''
+          compare: '',
+          changeChart: false
         }
     }
 
-    getData = async (startdate, enddate, comparestart, compareend) => {
+    getData = async (startdate, enddate, comparestart, compareend, type) => {
       const dc = 'FIPS:11';
       const token = 'CsgMDhKauNyJczMlffoEibhLIPkiQXDj';
       // const url = `https://www.ncdc.noaa.gov/cdo-web/api/v2/datatypes?locationcategoryid=${dc}&datacategoryid=TEMP&limit=1000`;
@@ -41,7 +42,7 @@ class Container extends Component {
 
       if (dataset){
         console.log('getting data...')
-        const call = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${datatype.results[19].id}&datasetid=${dataset.results[1].id}&startdate=${startdate}&enddate=${enddate}&units=standard&limit=1000&datatypeid=TAVG`,
+        const call = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${datatype.results[19].id}&datasetid=${dataset.results[1].id}&startdate=${startdate}&enddate=${enddate}&units=standard&limit=1000&datatypeid=${type}`,
           {
           headers: {
             token: token
@@ -57,7 +58,7 @@ class Container extends Component {
         });
 
         console.log('comparing data...')
-        const compareCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${datatype.results[19].id}&datasetid=${dataset.results[1].id}&startdate=${comparestart}&enddate=${compareend}&units=standard&limit=1000&datatypeid=TAVG`,
+        const compareCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${datatype.results[19].id}&datasetid=${dataset.results[1].id}&startdate=${comparestart}&enddate=${compareend}&units=standard&limit=1000&datatypeid=${type}`,
           {
           headers: {
             token: token
@@ -69,36 +70,46 @@ class Container extends Component {
         console.log('data', compareData, compareCall);
 
         this.setState({
-          compare: compareData.results
+          compare: compareData.results,
+          changeChart: this.state.changeChart == false ? true : false
         })
       }
 
     }
 
+    changeChart = () => {
+      console.log(this.state.changeChart);
+      if(!this.state.changeChart){
+      this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'PRCP');
+    } else {
+      this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'TAVG');
+    }
+  }
+
     
 
     componentDidMount () {
       // this.compareData('2018-01-01','2018-12-31');
-      this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31');
+      this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'TAVG');
     }
 
 
     render() {
       const res = this.state.res;
       const compare = this.state.compare;
-      console.log(res);
-      console.log(compare);
+      // console.log(res);
+      // console.log(compare);
 
       if (!this.state.res || res == undefined ||!this.state.compare || compare == undefined) {
         return null; //You can change here to put a customized loading spinner
       }
         return (
           <main>
-            <h1>Convert Away!</h1>
+            
             <Temperature
               value={res}
               compare={compare}
-                
+              onClick={this.changeChart}
             
             />
             {/* {res.map((r, i) => {

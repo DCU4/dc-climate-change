@@ -29,49 +29,12 @@ main {
     text-align: center;
     margin:0;
   }
-  .converter {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
+  .chart {
+    width: 50%;
+    height: 80vh;
     margin: 0 auto;
-    .selector {
-      display:flex;
-      justify-content: space-around;
-      p {
-        border: 2px solid black;
-        padding: 10px;
-        color: black;
-        background: transparent;
-        &.selected {
-          background: black;
-          color: white;
-        }
-      }
-    }
-    .input-container {
-      display:flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 40px;
-      input {
-        width:80%;
-        padding: 5px;
-        font-size: 1em;
-        border: 1px solid black;
-        font-size: 16px;
-      }
-
-    }
-    button {
-      font-size: 1em;
-      border: 2px solid black;
-      padding: 10px;
-      color: black;
-      background: transparent;
-      &:active {
-        background: black;
-          color: white;
-      }
-    }
+  }
+  canvas {
+   
   }
 }
