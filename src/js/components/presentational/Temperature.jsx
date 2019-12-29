@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import Chart from 'chart.js';
 
+
 export class Temperature extends Component {
+  
   constructor(props) {
+    // let chart;
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    // this.state = {
-    //   changeChart: false
-    // }
+    this.state = {
+      changeChart: false,
+      // chart: ''
+    }
     
   }
 
-
+// let chart;
   buildChart(dateArr, dataArr, compareArr, compareDate, change = false) {
-
+    // console.log(dataArr)
+    let chart;
 
     this.props.value.map((temp, i) => {
       let stringValue = temp.value.toString();
@@ -28,16 +33,14 @@ export class Temperature extends Component {
     });
 
 
-
-
     const ctx = document.getElementById('temp-chart').getContext('2d');
-    let chart = new Chart(ctx, {
+    chart = new Chart(ctx, {
       type: 'line',
       data: {
           labels: ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'],
           datasets: [
             {
-              label: 'Temp 1958',
+              label: !this.props.changeChart ? 'Temp 1958' : 'Precipation 1958',
               data: dataArr,
               fill:false,
               backgroundColor: [
@@ -63,7 +66,7 @@ export class Temperature extends Component {
               
             },
             {
-              label: 'Temp 2018',
+              label: !this.props.changeChart ? 'Temp 2018' : 'Precipation 2018',
               data: compareArr,
               fill:false,
               backgroundColor: [
@@ -101,47 +104,50 @@ export class Temperature extends Component {
           },
           // events: ['onmouseover']
       }
-  }).resize();
+  });
+  chart.update();
+  // chart.destroy();
+  chart.resize();
 
-
-
-
-  // if(change === true) {
-  //   console.log('updating...')
-  //   chart.update();
-  // }
 
 
   }
 
-  handleChange =()=>{
-   this.props.onClick();
+  handleChange = async () =>{
+    await this.props.onClick();
     let dataArr = [];
     let dateArr = [];
     let compareArr = [];
     let compareDate = [];
 
-      this.buildChart(dateArr, dataArr, compareArr, compareDate );
+    // this.buildChart(dateArr, dataArr, compareArr, compareDate, this.props.changeChart );
 
     
   }
 
-
-  componentDidMount () {
-    console.log('mount');
+  componentDidUpdate(){
+    console.log('update');
     let dataArr = [];
     let dateArr = [];
     let compareArr = [];
     let compareDate = [];
-    this.buildChart(dateArr, dataArr, compareArr, compareDate);
+    this.buildChart(dateArr, dataArr, compareArr, compareDate, this.props.changeChart);
+  }
+
+  componentDidMount () {
+    console.log('mount');
+    
+    let dataArr = [];
+    let dateArr = [];
+    let compareArr = [];
+    let compareDate = [];
+    this.buildChart(dateArr, dataArr, compareArr, compareDate, this.props.changeChart);
     
   }
 
 render() {
-  if(window.line && window.line !== null){
-    window.line.destroy();
-}
-
+  
+  
   const deg = <span>&#176;</span>; // degree symbol
 
 
