@@ -100,12 +100,15 @@ class Container extends Component {
       // console.log(res);
       // console.log(compare);
 
-      if (!this.state.res || res == undefined ||!this.state.compare || compare == undefined) {
-        return null; //You can change here to put a customized loading spinner
+      if (!this.state.res || res == undefined) {
+        // return null; //You can change here to put a customized loading spinner
+        return <div className="spinner">Loading Data...</div>
+      } else if (!this.state.compare || compare == undefined){
+        return <div className="spinner">Comparing Data...</div>
       }
         return (
           <main>
-            
+            {/* {spinner} */}
             <Temperature
               value={res}
               compare={compare}
