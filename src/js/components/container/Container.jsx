@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import Chart from 'chart.js';
 import { Temperature } from "../presentational/Temperature.jsx";
 
 
@@ -27,7 +28,7 @@ class Container extends Component {
         }
       });
       const datatype = await datatypeCall.json();
-      console.log('dataype:',datatype);
+      // console.log('dataype:',datatype);
 
       // `https://www.ncdc.noaa.gov/cdo-web/api/v2/datasets?datatypeid=${datatype.results[55].id}`
       const datasetCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/datasets?stationid=${datatype.results[19].id}`,{
@@ -36,12 +37,12 @@ class Container extends Component {
         }
       });
       const dataset = await datasetCall.json();
-      console.log('dataset:',dataset);
+      // console.log('dataset:',dataset);
 
 
 
       if (dataset){
-        console.log('getting data...')
+        // console.log('getting data...')
         const call = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${datatype.results[19].id}&datasetid=${dataset.results[1].id}&startdate=${startdate}&enddate=${enddate}&units=standard&limit=1000&datatypeid=${type}`,
           {
           headers: {
@@ -53,9 +54,9 @@ class Container extends Component {
         const data = await call.json();
         console.log('data', data, call);
 
-        this.setState({
-          res: data.results
-        });
+        // this.setState({
+        //   res: data.results
+        // });
 
         console.log('comparing data...')
         const compareCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${datatype.results[19].id}&datasetid=${dataset.results[1].id}&startdate=${comparestart}&enddate=${compareend}&units=standard&limit=1000&datatypeid=${type}`,
@@ -65,31 +66,36 @@ class Container extends Component {
           }
         })
         .catch(err => console.log(err))
-      
+
         const compareData = await compareCall.json();
         console.log('data', compareData, compareCall);
 
         this.setState({
-          compare: compareData.results,
-          changeChart: this.state.changeChart == false ? true : false
+          res: data.results,
+          compare: compareData.results
         })
       }
 
     }
 
     changeChart = () => {
-      console.log(this.state.changeChart);
-      if(!this.state.changeChart){
-      this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'PRCP');
-    } else {
-      this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'TAVG');
-    }
+      if(this.state.changeChart === false){
+        this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'PRCP');
+      } else {
+        this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'TAVG');
+      }
+
+      this.setState({
+        changeChart: this.state.changeChart === false ? true : false,
+        res: undefined,
+        compare: undefined
+      })
+     
   }
 
     
 
     componentDidMount () {
-      // this.compareData('2018-01-01','2018-12-31');
       this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'TAVG');
     }
 
@@ -97,31 +103,23 @@ class Container extends Component {
     render() {
       const res = this.state.res;
       const compare = this.state.compare;
-      // console.log(res);
-      // console.log(compare);
+      const change = this.state.changeChart;
 
       if (!this.state.res || res == undefined) {
-        // return null; //You can change here to put a customized loading spinner
         return <div className="spinner">Loading Data...</div>
       } else if (!this.state.compare || compare == undefined){
         return <div className="spinner">Comparing Data...</div>
       }
         return (
           <main>
-            {/* {spinner} */}
+            <h1>{!change ? 'Monthly Temperature':'Monthly Precipation'}</h1>
             <Temperature
               value={res}
               compare={compare}
               onClick={this.changeChart}
-            
+              changeChart={this.state.changeChart }
             />
-            {/* {res.map((r, i) => {
-            <Temperature
-              value={r}
-                
-            
-            />
-            })} */}
+
           
             
           </main>
