@@ -28,7 +28,7 @@ class Container extends Component {
         }
       });
       const datatype = await datatypeCall.json();
-      // console.log('dataype:',datatype);
+      console.log('dataype:',datatype);
 
       // `https://www.ncdc.noaa.gov/cdo-web/api/v2/datasets?datatypeid=${datatype.results[55].id}`
       const datasetCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/datasets?stationid=${datatype.results[19].id}`,{
@@ -104,7 +104,8 @@ class Container extends Component {
       const res = this.state.res;
       const compare = this.state.compare;
       const change = this.state.changeChart;
-
+      const deg = <span>&#176;</span>; // degree symbol
+      // console.log(deg)
       if (!this.state.res || res == undefined) {
         return <div className="spinner">Loading Data...</div>
       } else if (!this.state.compare || compare == undefined){
@@ -112,7 +113,7 @@ class Container extends Component {
       }
         return (
           <main>
-            <h1>{!change ? 'Monthly Temperature':'Monthly Precipation'}</h1>
+            <h1>{!change ? `Monthly Temperature F${deg.props.children}`:'Monthly Precipation (inches)'} Washington, DC </h1>
             <Temperature
               value={res}
               compare={compare}
