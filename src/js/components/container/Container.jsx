@@ -95,9 +95,10 @@ class Container extends Component {
     
   /*
   TMAX
+  TMIN
+  TAVG
   PRCP
   SNOW
-  TAVG
   */ 
     componentDidMount () {
       this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'TAVG');
