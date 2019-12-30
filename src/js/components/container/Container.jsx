@@ -57,7 +57,7 @@ class Container extends Component {
           res: data.results
         });
 
-        console.log('comparing data...')
+        // console.log('comparing data...')
         const compareCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${datatype.results[19].id}&datasetid=${dataset.results[1].id}&startdate=${comparestart}&enddate=${compareend}&units=standard&limit=1000&datatypeid=${type}`,
           {
           headers: {
