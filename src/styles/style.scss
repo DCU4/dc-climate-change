@@ -26,7 +26,7 @@ body {
     height: 500px;
     margin:  auto;
     font-size: 50px;
-    animation: loading  0.8s ease infinite ;
+    animation: fade-in ease 0.8s forwards;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -46,6 +46,7 @@ main {
     width: 50%;
     height: 80vh;
     margin: 0 auto;
+    animation: fade-in ease 0.8s forwards;
   }
   canvas {
    
