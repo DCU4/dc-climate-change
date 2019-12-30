@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import Chart from 'chart.js';
 import { Temperature } from "../presentational/Temperature.jsx";
 
 
@@ -11,8 +10,8 @@ class Container extends Component {
         // this.handleCtoF = this.handleCtoF.bind(this);
         this.state = {
           // convert: Math.floor((32-32)*(5/9))
-          res: '',
-          compare: '',
+          res: undefined,
+          compare: undefined,
           changeChart: false
         }
     }
@@ -30,14 +29,14 @@ class Container extends Component {
       const datatype = await datatypeCall.json();
       console.log('dataype:',datatype);
 
-      // `https://www.ncdc.noaa.gov/cdo-web/api/v2/datasets?datatypeid=${datatype.results[55].id}`
+      // station name: "NATIONAL ARBORETUM DC, DC US"
       const datasetCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/datasets?stationid=${datatype.results[19].id}`,{
         headers :{
           token: token
         }
       });
       const dataset = await datasetCall.json();
-      // console.log('dataset:',dataset);
+      console.log('dataset:',dataset);
 
 
 
@@ -54,9 +53,9 @@ class Container extends Component {
         const data = await call.json();
         console.log('data', data, call);
 
-        // this.setState({
-        //   res: data.results
-        // });
+        this.setState({
+          res: data.results
+        });
 
         console.log('comparing data...')
         const compareCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${datatype.results[19].id}&datasetid=${dataset.results[1].id}&startdate=${comparestart}&enddate=${compareend}&units=standard&limit=1000&datatypeid=${type}`,
@@ -71,7 +70,6 @@ class Container extends Component {
         console.log('data', compareData, compareCall);
 
         this.setState({
-          res: data.results,
           compare: compareData.results
         })
       }
@@ -81,6 +79,7 @@ class Container extends Component {
     changeChart = () => {
       if(this.state.changeChart === false){
         this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'PRCP');
+        // this.getData('2018-01-01','2018-12-31','2018-01-01','2018-12-31', 'GAHT');
       } else {
         this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'TAVG');
       }
@@ -94,26 +93,29 @@ class Container extends Component {
   }
 
     
-
+  /*
+  TMAX
+  PRCP
+  SNOW
+  TAVG
+  */ 
     componentDidMount () {
       this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'TAVG');
     }
 
-
     render() {
       const res = this.state.res;
       const compare = this.state.compare;
-      const change = this.state.changeChart;
-      const deg = <span>&#176;</span>; // degree symbol
+     
       // console.log(deg)
       if (!this.state.res || res == undefined) {
-        return <div className="spinner">Loading Data...</div>
+        return <div className="spinner">Loading Data...</div>;
       } else if (!this.state.compare || compare == undefined){
-        return <div className="spinner">Comparing Data...</div>
+        return <div className="spinner">Comparing Data...</div>;
       }
         return (
           <main>
-            <h1>{!change ? `Monthly Temperature F${deg.props.children}`:'Monthly Precipation (inches)'} Washington, DC </h1>
+            
             <Temperature
               value={res}
               compare={compare}

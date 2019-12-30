@@ -16,12 +16,10 @@ export class Temperature extends Component {
   }
 
 // let chart;
-  buildChart(dateArr, dataArr, compareArr, compareDate, change = false) {
+  buildChart(dateArr, dataArr, compareArr, compareDate,changeChart) {
     // console.log(dataArr)
     let chart;
     this.props.value.map((temp, i) => {
-
-  
       let stringValue = temp.value.toString();
       dateArr.push(temp.date);
       dataArr.push(stringValue);
@@ -37,6 +35,7 @@ export class Temperature extends Component {
     const ctx = document.getElementById('temp-chart').getContext('2d');
     chart = new Chart(ctx, {
       type: 'line',
+      responsive: false,
       data: {
           labels: ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'],
           datasets: [
@@ -63,8 +62,7 @@ export class Temperature extends Component {
                 '#303f9f'
 
               ],
-              borderWidth: 2,
-              // radius: 5
+              borderWidth: 2
               
             },
             {
@@ -90,21 +88,20 @@ export class Temperature extends Component {
                 '#d32f2f'
 
               ],
-              borderWidth: 2,
-              // radius: 5
+              borderWidth: 2
             },
             
           ]
       },
       options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      // beginAtZero: true,
-                      // stacked:true
-                  }
-              }]
-          },
+          // scales: {
+          //     yAxes: [{
+          //         ticks: {
+          //             // beginAtZero: true,
+          //             // stacked:true
+          //         }
+          //     }]
+          // },
           elements: {
             point: {
               radius: 5,
@@ -117,32 +114,23 @@ export class Temperature extends Component {
             mode: 'index',
             axis: 'y'
           },
-          legend: {
-
-          }
+          // animation: {
+          //   duration: 10000,
+          //   chart:chart
+          // }
           // events: ['onmouseover']
       }
   });
   chart.update();
-  // chart.destroy();
+  
   chart.resize();
-  // console.log(chart);
-  chart.config.options.elements.point.radius = 5;
 
 
 
   }
 
-  handleChange = async () =>{
-    await this.props.onClick();
-    let dataArr = [];
-    let dateArr = [];
-    let compareArr = [];
-    let compareDate = [];
-
-    // this.buildChart(dateArr, dataArr, compareArr, compareDate, this.props.changeChart );
-
-    
+  handleChange =  () =>{
+     this.props.onClick();
   }
 
   componentDidUpdate(){
@@ -151,7 +139,7 @@ export class Temperature extends Component {
     let dateArr = [];
     let compareArr = [];
     let compareDate = [];
-    this.buildChart(dateArr, dataArr, compareArr, compareDate, this.props.changeChart);
+    this.buildChart(dateArr, dataArr, compareArr, compareDate);
   }
 
   componentDidMount () {
@@ -161,19 +149,18 @@ export class Temperature extends Component {
     let dateArr = [];
     let compareArr = [];
     let compareDate = [];
-    this.buildChart(dateArr, dataArr, compareArr, compareDate, this.props.changeChart);
+    this.buildChart(dateArr, dataArr, compareArr, compareDate);
     
   }
 
 render() {
-  
-  
-
-
+  const deg = <span>&#176;</span>; // degree symbol
+  const change = this.props.changeChart;
     return (
       <div className="chart">
+        <h1>{!change ? `Monthly Temperature F${deg.props.children}`:'Monthly Precipation (inches)'} Washington, DC </h1>
         <button onClick={this.handleChange}>{!this.props.changeChart ? 'Show Precipitation' : 'Show Temperature'}</button>
-        <canvas id="temp-chart" width="200" height="200"></canvas>
+        <canvas id="temp-chart" width="500" height="500"></canvas>
       </div>
 
     );
