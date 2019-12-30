@@ -19,8 +19,9 @@ export class Temperature extends Component {
   buildChart(dateArr, dataArr, compareArr, compareDate, change = false) {
     // console.log(dataArr)
     let chart;
-
     this.props.value.map((temp, i) => {
+
+  
       let stringValue = temp.value.toString();
       dateArr.push(temp.date);
       dataArr.push(stringValue);
@@ -32,7 +33,7 @@ export class Temperature extends Component {
       compareArr.push(stringValue);
     });
 
-
+    console.log(dataArr);
     const ctx = document.getElementById('temp-chart').getContext('2d');
     chart = new Chart(ctx, {
       type: 'line',
@@ -44,25 +45,26 @@ export class Temperature extends Component {
               data: dataArr,
               fill:false,
               backgroundColor: [
-                'black',
-                'black',
-                'black',
-                'black',
-                'black',
-                'black',
-                'black',
-                'black',
-                'black',
-                'black',
-                'black',
-                'black',
+                '#303f9f',
+                '#303f9f',
+                '#303f9f',
+                '#303f9f',
+                '#303f9f',
+                '#303f9f',
+                '#303f9f',
+                '#303f9f',
+                '#303f9f',
+                '#303f9f',
+                '#303f9f',
+                '#303f9f',
 
               ],
               borderColor: [
-                'black'
+                '#303f9f'
 
               ],
-              borderWidth: 2
+              borderWidth: 2,
+              // radius: 5
               
             },
             {
@@ -70,25 +72,26 @@ export class Temperature extends Component {
               data: compareArr,
               fill:false,
               backgroundColor: [
-                'red',
-                'red',
-                'red',
-                'red',
-                'red',
-                'red',
-                'red',
-                'red',
-                'red',
-                'red',
-                'red',
-                'red',
+                '#d32f2f',
+                '#d32f2f',
+                '#d32f2f',
+                '#d32f2f',
+                '#d32f2f',
+                '#d32f2f',
+                '#d32f2f',
+                '#d32f2f',
+                '#d32f2f',
+                '#d32f2f',
+                '#d32f2f',
+                '#d32f2f',
 
               ],
               borderColor: [
-                'red'
+                '#d32f2f'
 
               ],
-              borderWidth: 2
+              borderWidth: 2,
+              // radius: 5
             },
             
           ]
@@ -102,12 +105,29 @@ export class Temperature extends Component {
                   }
               }]
           },
+          elements: {
+            point: {
+              radius: 5,
+              borderWidth: 0,
+              borderColor: 'rgba(0, 0, 0, 0)',
+              hoverRadius: 15
+            }
+          },
+          tooltips: {
+            mode: 'index',
+            axis: 'y'
+          },
+          legend: {
+
+          }
           // events: ['onmouseover']
       }
   });
   chart.update();
   // chart.destroy();
   chart.resize();
+  // console.log(chart);
+  chart.config.options.elements.point.radius = 5;
 
 
 
@@ -148,12 +168,11 @@ export class Temperature extends Component {
 render() {
   
   
-  const deg = <span>&#176;</span>; // degree symbol
 
 
     return (
       <div className="chart">
-        <button onClick={this.handleChange}>Change Chart</button>
+        <button onClick={this.handleChange}>{!this.props.changeChart ? 'Show Precipitation' : 'Show Temperature'}</button>
         <canvas id="temp-chart" width="200" height="200"></canvas>
       </div>
 
