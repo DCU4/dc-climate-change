@@ -110,9 +110,9 @@ class Container extends Component {
      
       // console.log(deg)
       if (!this.state.res || res == undefined) {
-        return <div className="spinner">Loading Data...</div>;
+        return <div className="spinner">Loading Data...<span></span></div>;
       } else if (!this.state.compare || compare == undefined){
-        return <div className="spinner">Comparing Data...</div>;
+        return <div className="spinner">Comparing Data...<span></span></div>;
       }
         return (
           <main>
