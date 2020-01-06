@@ -61,9 +61,15 @@ main {
   }
   .chart {
     width: 50%;
+    // max-height: 400px;
     height:100vh;
     margin: 0 auto;
     animation: fade-in ease 0.8s forwards;
+    .change-chart-wrapper {
+      display:flex;
+      justify-content: space-between;
+      padding: 10px 0;
+    }
   }
   canvas {
    
