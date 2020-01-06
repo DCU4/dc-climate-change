@@ -12,7 +12,8 @@ class Container extends Component {
           // convert: Math.floor((32-32)*(5/9))
           res: undefined,
           compare: undefined,
-          changeChart: false
+          changeChart: false,
+          year: '1958'
         }
     }
 
@@ -77,11 +78,13 @@ class Container extends Component {
     }
 
     changeChart = () => {
+      console.log('changeChart', this.state.year);
+
       if(this.state.changeChart === false){
-        this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'PRCP');
+        this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2018-01-01','2018-12-31', 'PRCP');
         // this.getData('2018-01-01','2018-12-31','2018-01-01','2018-12-31', 'GAHT');
       } else {
-        this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'TAVG');
+        this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2018-01-01','2018-12-31', 'TAVG');
       }
 
       this.setState({
@@ -92,6 +95,17 @@ class Container extends Component {
      
   }
 
+  changeYear = (e) => {
+    console.log(e.target.value);
+    this.setState({
+      year: e.target.value,
+      changeChart: false,
+      res: undefined,
+      compare: undefined
+    });
+    this.getData(`${e.target.value}-01-01`,`${e.target.value}-12-31`, '2018-01-01','2018-12-31','TAVG');
+  }
+
     
   /*
   TMAX
@@ -100,8 +114,15 @@ class Container extends Component {
   PRCP
   SNOW
   */ 
+
+  comp
+
+    // componentDidUpdate(){
+    //   this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2018-01-01','2018-12-31','TAVG');
+    // }
     componentDidMount () {
-      this.getData('1958-01-01','1958-12-31','2018-01-01','2018-12-31', 'TAVG');
+      console.log('mount');
+      this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2018-01-01','2018-12-31','TAVG');
     }
 
     render() {
@@ -122,6 +143,8 @@ class Container extends Component {
               compare={compare}
               onClick={this.changeChart}
               changeChart={this.state.changeChart }
+              changeYear={this.changeYear}
+              year={this.state.year}
             />
 
           
