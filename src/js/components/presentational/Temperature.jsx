@@ -40,7 +40,7 @@ export class Temperature extends Component {
           labels: ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'],
           datasets: [
             {
-              label: !this.props.changeChart ? 'Temp 1958' : 'Precipation 1958',
+              label: !this.props.changeChart  ? `Temp ${this.props.year}` : `Precipitation ${this.props.year}` ,
               data: dataArr,
               fill:false,
               backgroundColor: [
@@ -156,10 +156,22 @@ export class Temperature extends Component {
 render() {
   const deg = <span>&#176;</span>; // degree symbol
   const change = this.props.changeChart;
+  let start = '1958';
+  var end = new Date().getFullYear();
+  let years = []
+  for(let year = start ; year <=end; year++){
+    years.push(<option key={year} value={year}>{year}</option>);
+  }
     return (
       <div className="chart">
         <h1>{!change ? `Monthly Temperature F${deg.props.children}`:'Monthly Precipation (inches)'} Washington, DC </h1>
-        <button onClick={this.handleChange}>{!this.props.changeChart ? 'Show Precipitation' : 'Show Temperature'}</button>
+        <div className="change-chart-wrapper">
+          <button onClick={this.handleChange}>{!this.props.changeChart ? 'Show Precipitation' : 'Show Temperature'}</button>
+          <select onChange={this.props.changeYear}>
+            <option value="default">Select Year</option>
+            {years}
+          </select>
+        </div>
         <canvas id="temp-chart" width="500" height="500"></canvas>
       </div>
 
