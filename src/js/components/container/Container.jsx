@@ -51,7 +51,7 @@ class Container extends Component {
           }
         })
         .catch(err => console.log(err))
-      
+
         const data = await call.json();
         console.log('data', data, call);
 
@@ -104,7 +104,7 @@ class Container extends Component {
     this.getData(`${e.target.value}-01-01`,`${e.target.value}-12-31`, '2018-01-01','2018-12-31',`${this.state.type}`);
   }
 
-    
+
   /*
   TMAX
   TMIN
@@ -112,8 +112,6 @@ class Container extends Component {
   PRCP
   SNOW
   */ 
-
-  // comp
 
     // componentDidUpdate(){
     //   this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2018-01-01','2018-12-31','TAVG');
@@ -126,7 +124,7 @@ class Container extends Component {
     render() {
       const res = this.state.res;
       const compare = this.state.compare;
-     
+
       // console.log(deg)
       if (!this.state.res || res == undefined) {
         return <div className="spinner">Loading Data...<span></span></div>;
@@ -135,7 +133,7 @@ class Container extends Component {
       }
         return (
           <main>
-            
+
             <Temperature
               value={res}
               compare={compare}
@@ -147,8 +145,8 @@ class Container extends Component {
               type={this.state.type}
             />
 
-          
-            
+
+
           </main>
 
         );
