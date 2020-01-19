@@ -6,13 +6,9 @@ import { Temperature } from "../presentational/Temperature.jsx";
 class Container extends Component {
     constructor(props) {
         super(props);
-        // this.handleFtoC = this.handleFtoC.bind(this);
-        // this.handleCtoF = this.handleCtoF.bind(this);
         this.state = {
-          // convert: Math.floor((32-32)*(5/9))
           res: undefined,
           compare: undefined,
-          changeChart: false,
           year: '1958',
           type: 'TAVG'
         }
@@ -81,7 +77,6 @@ class Container extends Component {
     changeChart = (e) => {
 
       this.setState({
-        changeChart: this.state.changeChart === false ? true : false,
         res: undefined,
         compare: undefined,
         type: e.target.value
@@ -94,10 +89,8 @@ class Container extends Component {
   }
 
   changeYear = (e) => {
-    // console.log(e.target.value);
     this.setState({
       year: e.target.value,
-      changeChart: false,
       res: undefined,
       compare: undefined
     });
@@ -113,9 +106,6 @@ class Container extends Component {
   SNOW
   */ 
 
-    // componentDidUpdate(){
-    //   this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2018-01-01','2018-12-31','TAVG');
-    // }
     componentDidMount () {
       // console.log('mount');
       this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2018-01-01','2018-12-31','TAVG');
@@ -138,7 +128,6 @@ class Container extends Component {
               value={res}
               compare={compare}
               onClick={this.changeChart}
-              changeChart={this.state.changeChart }
               onChange={this.changeChart}
               changeYear={this.changeYear}
               year={this.state.year}
