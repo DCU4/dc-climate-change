@@ -175,14 +175,16 @@ export class Temperature extends Component {
 
 render() {
   const deg = <span>&#176;</span>; // degree symbol
-  const change = this.props.changeChart;
+  
+  // create date options
   let start = '1958';
-  var end = new Date().getFullYear();
+  let end = new Date().getFullYear();
   let years = []
   for(let year = start ; year <=end; year++){
     years.push(<option key={year} value={year}>{year}</option>);
   }
 
+  // set up labels/type options
   let options = [
     {
       type:'TAVG',
@@ -194,16 +196,14 @@ render() {
     },
     {
       type:'SNOW',
-      title: 'Monthly Snowfall (inches)'}
+      title: 'Monthly Snowfall (inches)'
+    }
   ];
   const label = options.filter(l => this.props.type == l.type);
 
   let select = <select value={this.props.type} onChange={this.props.onChange}>
-      <option value="">--</option>
-      { options.map((opt, i) => <option key={i} value={opt.type}>{opt.title}</option> ) }
-    </select>
-
-
+                { options.map((opt, i) => <option key={i} value={opt.type}>{opt.title}</option> ) }
+              </select>
 
     return (
       <div className="chart">
@@ -213,7 +213,6 @@ render() {
            {select}
           
           <select value={this.props.year} onChange={this.props.changeYear}>
-            <option value="default">Select Year</option>
             {years}
           </select>
         </div>
