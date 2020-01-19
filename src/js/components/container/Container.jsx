@@ -13,7 +13,8 @@ class Container extends Component {
           res: undefined,
           compare: undefined,
           changeChart: false,
-          year: '1958'
+          year: '1958',
+          type: 'TAVG'
         }
     }
 
@@ -42,7 +43,7 @@ class Container extends Component {
 
 
       if (dataset){
-        // console.log('getting data...')
+        console.log('getting data...')
         const call = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${datatype.results[19].id}&datasetid=${dataset.results[1].id}&startdate=${startdate}&enddate=${enddate}&units=standard&limit=1000&datatypeid=${type}`,
           {
           headers: {
@@ -58,7 +59,7 @@ class Container extends Component {
           res: data.results
         });
 
-        // console.log('comparing data...')
+        console.log('comparing data...')
         const compareCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${datatype.results[19].id}&datasetid=${dataset.results[1].id}&startdate=${comparestart}&enddate=${compareend}&units=standard&limit=1000&datatypeid=${type}`,
           {
           headers: {
@@ -77,33 +78,30 @@ class Container extends Component {
 
     }
 
-    changeChart = () => {
-      console.log('changeChart', this.state.year);
-
-      if(this.state.changeChart === false){
-        this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2018-01-01','2018-12-31', 'PRCP');
-        // this.getData('2018-01-01','2018-12-31','2018-01-01','2018-12-31', 'GAHT');
-      } else {
-        this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2018-01-01','2018-12-31', 'TAVG');
-      }
+    changeChart = (e) => {
 
       this.setState({
         changeChart: this.state.changeChart === false ? true : false,
         res: undefined,
-        compare: undefined
-      })
+        compare: undefined,
+        type: e.target.value
+      }, ()=> {
+        this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2018-01-01','2018-12-31', `${this.state.type}`);
+      });
+
+      
      
   }
 
   changeYear = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     this.setState({
       year: e.target.value,
       changeChart: false,
       res: undefined,
       compare: undefined
     });
-    this.getData(`${e.target.value}-01-01`,`${e.target.value}-12-31`, '2018-01-01','2018-12-31','TAVG');
+    this.getData(`${e.target.value}-01-01`,`${e.target.value}-12-31`, '2018-01-01','2018-12-31',`${this.state.type}`);
   }
 
     
@@ -115,13 +113,13 @@ class Container extends Component {
   SNOW
   */ 
 
-  comp
+  // comp
 
     // componentDidUpdate(){
     //   this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2018-01-01','2018-12-31','TAVG');
     // }
     componentDidMount () {
-      console.log('mount');
+      // console.log('mount');
       this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2018-01-01','2018-12-31','TAVG');
     }
 
@@ -143,8 +141,10 @@ class Container extends Component {
               compare={compare}
               onClick={this.changeChart}
               changeChart={this.state.changeChart }
+              onChange={this.changeChart}
               changeYear={this.changeYear}
               year={this.state.year}
+              type={this.state.type}
             />
 
           
