@@ -5,6 +5,7 @@ See the changes in average monthly temperature, precipitation, and snowfall in t
  - ~~Allow user to select dates to compare~~
  - Find other data to test
     - See `noaa-data-types.txt` for full list
+    - Current data types: TAVG, PRCP, SNOW
  - Add other areas/stations
  - Find average change over time
 
