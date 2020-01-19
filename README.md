@@ -1,9 +1,10 @@
 # Climate change in DC from 1958 to 2018
-See the changes in average monthly temperature and precipitation in the DC region. Data is pulled from the NOAA station at the National Arboretum (FIPS:11). Compare dates to 2018, which is the most recent full year of data. 
+See the changes in average monthly temperature, precipitation, and snowfall in the DC region. Data is pulled from the NOAA station at the National Arboretum (FIPS:11). Compare dates to 2018, which is the most recent full year of data. 
 
 ## TO DO
  - ~~Allow user to select dates to compare~~
  - Find other data to test
+    - See `noaa-data-types.txt` for full list
  - Add other areas/stations
  - Find average change over time
 
