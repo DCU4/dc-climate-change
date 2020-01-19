@@ -31,7 +31,26 @@ export class Temperature extends Component {
       compareArr.push(stringValue);
     });
 
-    console.log(dataArr);
+    let labels = [
+      {
+        type:'TAVG',
+        typeTitle:'Temp',
+        title: 'Average Temperature'
+      },
+      {
+        type:'PRCP',
+        typeTitle:'Precipitation',
+        title:'Average Precipitation'
+      },
+      {
+        type:'SNOW',
+        typeTitle:'Snowfall',
+        title: 'Average Snowfall'}
+    ];
+    
+    const label = labels.filter(l => this.props.type == l.type);
+    // console.log(dataArr); this.props.type == l.type ? `${l.type} ${this.props.year}` : `TAVG ${this.props.year}`
+    console.log(this.props.type, label);
     const ctx = document.getElementById('temp-chart').getContext('2d');
     chart = new Chart(ctx, {
       type: 'line',
@@ -40,7 +59,8 @@ export class Temperature extends Component {
           labels: ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'],
           datasets: [
             {
-              label: !this.props.changeChart  ? `Temp ${this.props.year}` : `Precipitation ${this.props.year}` ,
+              // label: !this.props.changeChart  ? `Temp ${this.props.year}` : `Precipitation ${this.props.year}` ,
+              label: `${label[0].typeTitle} ${this.props.year}`,
               data: dataArr,
               fill:false,
               backgroundColor: [
@@ -66,7 +86,7 @@ export class Temperature extends Component {
               
             },
             {
-              label: !this.props.changeChart ? 'Temp 2018' : 'Precipation 2018',
+              label: `${label[0].typeTitle} 2018`,
               data: compareArr,
               fill:false,
               backgroundColor: [
@@ -143,7 +163,7 @@ export class Temperature extends Component {
   }
 
   componentDidMount () {
-    console.log('mount');
+    // console.log('mount');
     
     let dataArr = [];
     let dateArr = [];
@@ -162,12 +182,37 @@ render() {
   for(let year = start ; year <=end; year++){
     years.push(<option key={year} value={year}>{year}</option>);
   }
+
+  let options = [
+    {
+      type:'TAVG',
+      title: `Monthly Temperature F${deg.props.children}`
+    },
+    {
+      type:'PRCP',
+      title:'Monthly Precipation (inches)'
+    },
+    {
+      type:'SNOW',
+      title: 'Monthly Snowfall (inches)'}
+  ];
+  const label = options.filter(l => this.props.type == l.type);
+
+  let select = <select value={this.props.type} onChange={this.props.onChange}>
+      <option value="">--</option>
+      { options.map((opt, i) => <option key={i} value={opt.type}>{opt.title}</option> ) }
+    </select>
+
+
+
     return (
       <div className="chart">
-        <h1>{!change ? `Monthly Temperature F${deg.props.children}`:'Monthly Precipation (inches)'} Washington, DC </h1>
+        <h1>{label[0].title} Washington, DC </h1>
         <div className="change-chart-wrapper">
-          <button onClick={this.handleChange}>{!this.props.changeChart ? 'Show Precipitation' : 'Show Temperature'}</button>
-          <select onChange={this.props.changeYear}>
+          
+           {select}
+          
+          <select value={this.props.year} onChange={this.props.changeYear}>
             <option value="default">Select Year</option>
             {years}
           </select>
