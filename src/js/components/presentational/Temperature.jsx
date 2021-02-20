@@ -63,30 +63,13 @@ export class Temperature extends Component {
               label: `${label[0].typeTitle} ${this.props.year}`,
               data: dataArr,
               fill:false,
-              backgroundColor: [
-                '#303f9f',
-                '#303f9f',
-                '#303f9f',
-                '#303f9f',
-                '#303f9f',
-                '#303f9f',
-                '#303f9f',
-                '#303f9f',
-                '#303f9f',
-                '#303f9f',
-                '#303f9f',
-                '#303f9f',
-
-              ],
-              borderColor: [
-                '#303f9f'
-
-              ],
+              backgroundColor: '#303f9f',
+              borderColor: '#303f9f',
               borderWidth: 2
               
             },
             {
-              label: `${label[0].typeTitle} 2018`,
+              label: `${label[0].typeTitle} 2020`,
               data: compareArr,
               fill:false,
               backgroundColor: [
