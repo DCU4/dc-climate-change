@@ -26,9 +26,10 @@ class Container extends Component {
       });
       const datatype = await datatypeCall.json();
       console.log('dataype:',datatype);
-
-      // station name: "NATIONAL ARBORETUM DC, DC US"
-      const datasetCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/datasets?stationid=${datatype.results[19].id}`,{
+      const station = datatype.results[20].id;
+      // 19 station name: "NATIONAL ARBORETUM DC, DC US"
+      // 
+      const datasetCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/datasets?stationid=${station}`,{
         headers :{
           token: token
         }
@@ -40,7 +41,7 @@ class Container extends Component {
 
       if (dataset){
         console.log('getting data...')
-        const call = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${datatype.results[19].id}&datasetid=${dataset.results[1].id}&startdate=${startdate}&enddate=${enddate}&units=standard&limit=1000&datatypeid=${type}`,
+        const call = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${station}&datasetid=${dataset.results[1].id}&startdate=${startdate}&enddate=${enddate}&units=standard&limit=1000&datatypeid=${type}`,
           {
           headers: {
             token: token
@@ -56,7 +57,7 @@ class Container extends Component {
         });
 
         console.log('comparing data...')
-        const compareCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${datatype.results[19].id}&datasetid=${dataset.results[1].id}&startdate=${comparestart}&enddate=${compareend}&units=standard&limit=1000&datatypeid=${type}`,
+        const compareCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${station}&datasetid=${dataset.results[1].id}&startdate=${comparestart}&enddate=${compareend}&units=standard&limit=1000&datatypeid=${type}`,
           {
           headers: {
             token: token
@@ -81,7 +82,7 @@ class Container extends Component {
         compare: undefined,
         type: e.target.value
       }, ()=> {
-        this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2018-01-01','2018-12-31', `${this.state.type}`);
+        this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2020-01-01','2020-12-31', `${this.state.type}`);
       });
 
       
@@ -94,7 +95,7 @@ class Container extends Component {
       res: undefined,
       compare: undefined
     });
-    this.getData(`${e.target.value}-01-01`,`${e.target.value}-12-31`, '2018-01-01','2018-12-31',`${this.state.type}`);
+    this.getData(`${e.target.value}-01-01`,`${e.target.value}-12-31`, '2020-01-01','2020-12-31',`${this.state.type}`);
   }
 
 
@@ -104,11 +105,14 @@ class Container extends Component {
   TAVG
   PRCP
   SNOW
+
+  WESD = Water equivalent of snow on the ground (tenths of mm)
+	WESF = Water equivalent of snowfall (tenths of mm)
   */ 
 
     componentDidMount () {
       // console.log('mount');
-      this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2018-01-01','2018-12-31','TAVG');
+      this.getData(`${this.state.year}-01-01`,`${this.state.year}-12-31`, '2020-01-01','2020-12-31','TAVG');
     }
 
     render() {
