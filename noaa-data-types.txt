@@ -143,11 +143,11 @@ ELEMENT    is the element type.   There are five core elements as well as a numb
 	   
 	   The five core elements are:
 
-           PRCP = Precipitation (tenths of mm)
-   	   SNOW = Snowfall (mm)
-	   SNWD = Snow depth (mm)
-           TMAX = Maximum temperature (tenths of degrees C)
-           TMIN = Minimum temperature (tenths of degrees C)
+    PRCP = Precipitation (tenths of mm)
+    SNOW = Snowfall (mm)
+    SNWD = Snow depth (mm)
+    TMAX = Maximum temperature (tenths of degrees C)
+    TMIN = Minimum temperature (tenths of degrees C)
 	   
 	   The other elements are:
 	   
@@ -239,8 +239,8 @@ ELEMENT    is the element type.   There are five core elements as well as a numb
 	   WDFG = Direction of peak wind gust (degrees)
 	   WDFI = Direction of highest instantaneous wind (degrees)
 	   WDFM = Fastest mile wind direction (degrees)
-           WDMV = 24-hour wind movement (km)	   
-           WESD = Water equivalent of snow on the ground (tenths of mm)
+     WDMV = 24-hour wind movement (km)	   
+     WESD = Water equivalent of snow on the ground (tenths of mm)
 	   WESF = Water equivalent of snowfall (tenths of mm)
 	   WSF1 = Fastest 1-minute wind speed (tenths of meters per second)
 	   WSF2 = Fastest 2-minute wind speed (tenths of meters per second)
@@ -251,14 +251,12 @@ ELEMENT    is the element type.   There are five core elements as well as a numb
 	   WT** = Weather Type where ** has one of the following values:
 	   
                   01 = Fog, ice fog, or freezing fog (may include heavy fog)
-                  02 = Heavy fog or heaving freezing fog (not always 
-		       distinquished from fog)
+                  02 = Heavy fog or heaving freezing fog (not always distinquished from fog)
                   03 = Thunder
                   04 = Ice pellets, sleet, snow pellets, or small hail 
                   05 = Hail (may include small hail)
                   06 = Glaze or rime 
-                  07 = Dust, volcanic ash, blowing dust, blowing sand, or 
-		       blowing obstruction
+                  07 = Dust, volcanic ash, blowing dust, blowing sand, or blowing obstruction
                   08 = Smoke or haze 
                   09 = Blowing or drifting snow
                   10 = Tornado, waterspout, or funnel cloud 
@@ -267,8 +265,7 @@ ELEMENT    is the element type.   There are five core elements as well as a numb
                   13 = Mist
                   14 = Drizzle
                   15 = Freezing drizzle 
-                  16 = Rain (may include freezing rain, drizzle, and
-		       freezing drizzle) 
+                  16 = Rain (may include freezing rain, drizzle, and freezing drizzle) 
                   17 = Freezing rain 
                   18 = Snow, snow pellets, snow grains, or ice crystals
                   19 = Unknown source of precipitation 
@@ -292,7 +289,7 @@ MFLAG1     is the measurement flag for the first day of the month.  There are
            Blank = no measurement information applicable
            B     = precipitation total formed from two 12-hour totals
            D     = precipitation total formed from four six-hour totals
-	   H     = represents highest or lowest hourly temperature (TMAX or TMIN) 
+	        H     = represents highest or lowest hourly temperature (TMAX or TMIN) 
 	           or the average of hourly values (TAVG)
 	   K     = converted from knots 
 	   L     = temperature appears to be lagged with respect to reported
