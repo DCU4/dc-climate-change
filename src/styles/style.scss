@@ -8,26 +8,26 @@
 }
 
 @keyframes spinner {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-body{
-  font-size: 2rem;
-}
+
 body {
-  background: #EEE;
+  font-size: 2rem;
+  background: #eee;
   color: black;
-  background-attachment: fixed;
-  background-position: 0% 80%;
-  background-size: 100% 500%;
-  font-family: 'Avenir', sans-serif;
-  transition: all 1s ease-in .3s;
+  font-family: "Avenir", sans-serif;
+  transition: all 1s ease-in 0.3s;
 
   .spinner {
     width: 500px;
     height: 500px;
-    margin:  auto;
+    margin: auto;
     font-size: 50px;
     animation: fade-in ease 0.8s forwards;
     text-align: center;
@@ -35,35 +35,36 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
+
     span {
       position: absolute;
       bottom: 10px;
       animation: spinner 1s infinite forwards ease-out;
-      border: 16px solid #f3f3f3; 
+      border: 16px solid #f3f3f3;
       border-top: 16px solid #d32f2f;
-      border-bottom:  16px solid #303f9f;
+      border-bottom: 16px solid #303f9f;
       border-radius: 50%;
       width: 120px;
       height: 120px;
     }
   }
-
 }
 
 main {
-  
+
   h1 {
     text-align: center;
-    margin:0;
-    font-size: 16px;;
+    margin: 0;
+    font-size: 16px;
   }
+
   .chart {
     width: 90%;
-    height:100vh;
     margin: 0 auto;
     animation: fade-in ease 0.8s forwards;
+
     .change-chart-wrapper {
-      display:flex;
+      display: flex;
       justify-content: space-between;
       padding: 10px 0;
     }
