@@ -46,7 +46,7 @@ export class WeatherChart extends Component {
 
     const label = labels.filter(l => this.props.type == l.type);
     // console.log(dataArr); this.props.type == l.type ? `${l.type} ${this.props.year}` : `TAVG ${this.props.year}`
-    console.log(this.props.type, label);
+    // console.log(this.props.type, label);
     const ctx = document.getElementById('temp-chart').getContext('2d');
     chart = new Chart(ctx, {
       type: 'line',
@@ -62,7 +62,6 @@ export class WeatherChart extends Component {
             backgroundColor: '#303f9f',
             borderColor: '#303f9f',
             borderWidth: 2
-
           },
           {
             label: `${label[0].typeTitle} 2020`,
@@ -142,22 +141,21 @@ export class WeatherChart extends Component {
     let compareArr = [];
     let compareDate = [];
     this.buildChart(dateArr, dataArr, compareArr, compareDate);
-
   }
 
   render() {
     const deg = <span>&#176;</span>; // degree symbol
 
     // create date options
-    let start = '1958';
-    let end = new Date().getFullYear();
-    let years = []
+    const start = '1958';
+    const end = new Date().getFullYear();
+    const years = []
     for (let year = start; year <= end; year++) {
       years.push(<option key={year} value={year}>{year}</option>);
     }
 
     // set up labels/type options
-    let options = [
+    const options = [
       {
         type: 'TAVG',
         title: `Monthly Temperature F${deg.props.children}`
@@ -171,18 +169,18 @@ export class WeatherChart extends Component {
         title: 'Monthly Snowfall (inches)'
       }
     ];
-    const label = options.filter(l => this.props.type == l.type);
 
-    let select = <select value={this.props.type} onChange={this.props.onChange}>
-                  {options.map((opt, i) => <option key={i} value={opt.type}>{opt.title}</option>)}
-                </select>
+    const label = options.filter(l => this.props.type == l.type);
+    const types = options.map((opt, i) => <option key={i} value={opt.type}>{opt.title}</option>);
+                
 
     return (
       <div className="chart">
         <h1>{label[0].title} Washington, DC </h1>
         <div className="change-chart-wrapper">
-
-          {select}
+          <select value={this.props.type} onChange={this.props.onChange}>
+            {types}
+          </select>
 
           <select value={this.props.year} onChange={this.props.changeYear}>
             {years}

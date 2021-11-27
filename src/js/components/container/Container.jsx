@@ -107,7 +107,6 @@ class Container extends Component {
   */
 
   componentDidMount() {
-    // console.log('mount');
     this.getData(`${this.state.year}-01-01`, `${this.state.year}-12-31`, '2020-01-01', '2020-12-31', 'TAVG');
   }
 
