@@ -1,0 +1,22 @@
+{
+  "name": "dc-climate-change-api",
+  "version": "1.0.0",
+  "description": "API for dc-climate-change",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DCU4/dc-climate-change.git.git"
+  },
+  "author": "Dylan Connor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DCU4/dc-climate-change/issues"
+  },
+  "homepage": "https://github.com/DCU4/dc-climate-change/"
+}

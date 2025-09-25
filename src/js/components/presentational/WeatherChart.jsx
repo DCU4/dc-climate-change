@@ -1,26 +1,25 @@
-import React, { Component } from 'react';
+import React, { useRef, useEffect } from 'react';
 import Chart from 'chart.js';
 
+const WeatherChart = (props) => {
+  const chartRef = useRef(null);
+  // Chart instance ref to avoid multiple initializations
+  const chartInstance = useRef(null);
 
-export class WeatherChart extends Component {
+  useEffect(() => {
+    if (!props.value || !props.compare) return;
+    let dataArr = [];
+    let dateArr = [];
+    let compareArr = [];
+    let compareDate = [];
 
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.state = {
-      changeChart: false
-    }
-  }
-
-  buildChart(dateArr, dataArr, compareArr, compareDate, changeChart) {
-    let chart;
-    this.props.value.map((temp, i) => {
+    props.value.forEach((temp) => {
       let stringValue = temp.value.toString();
       dateArr.push(temp.date);
       dataArr.push(stringValue);
     });
 
-    this.props.compare.map((comp, i) => {
+    props.compare.forEach((comp) => {
       let stringValue = comp.value.toString();
       compareDate.push(comp.date);
       compareArr.push(stringValue);
@@ -44,19 +43,22 @@ export class WeatherChart extends Component {
       }
     ];
 
-    const label = labels.filter(l => this.props.type == l.type);
-    // console.log(dataArr); this.props.type == l.type ? `${l.type} ${this.props.year}` : `TAVG ${this.props.year}`
-    // console.log(this.props.type, label);
-    const ctx = document.getElementById('temp-chart').getContext('2d');
-    chart = new Chart(ctx, {
+    const label = labels.filter(l => props.type === l.type);
+    const ctx = chartRef.current.getContext('2d');
+
+    // Destroy previous chart instance if exists
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
+
+    chartInstance.current = new Chart(ctx, {
       type: 'line',
       responsive: false,
       data: {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
         datasets: [
           {
-            // label: !this.props.changeChart  ? `Temp ${this.props.year}` : `Precipitation ${this.props.year}` ,
-            label: `${label[0].typeTitle} ${this.props.year}`,
+            label: `${label[0].typeTitle} ${props.year}`,
             data: dataArr,
             fill: false,
             backgroundColor: '#303f9f',
@@ -80,26 +82,15 @@ export class WeatherChart extends Component {
               '#d32f2f',
               '#d32f2f',
               '#d32f2f',
-
             ],
             borderColor: [
               '#d32f2f'
-
             ],
             borderWidth: 2
           },
-
         ]
       },
       options: {
-        // scales: {
-        //     yAxes: [{
-        //         ticks: {
-        //             // beginAtZero: true,
-        //             // stacked:true
-        //         }
-        //     }]
-        // },
         elements: {
           point: {
             radius: 5,
@@ -112,85 +103,60 @@ export class WeatherChart extends Component {
           mode: 'index',
           axis: 'y'
         },
-        // animation: {
-        //   duration: 10000,
-        //   chart:chart
-        // }
-        // events: ['onmouseover']
       }
     });
-    chart.update();
-    chart.resize();
-  }
-
-  handleChange = () => {
-    this.props.onClick();
-  }
-
-  componentDidUpdate() {
-    let dataArr = [];
-    let dateArr = [];
-    let compareArr = [];
-    let compareDate = [];
-    this.buildChart(dateArr, dataArr, compareArr, compareDate);
-  }
-
-  componentDidMount() {
-    let dataArr = [];
-    let dateArr = [];
-    let compareArr = [];
-    let compareDate = [];
-    this.buildChart(dateArr, dataArr, compareArr, compareDate);
-  }
-
-  render() {
-    const deg = <span>&#176;</span>; // degree symbol
-
-    // create date options
-    const start = '1958';
-    const end = new Date().getFullYear();
-    const years = []
-    for (let year = start; year <= end; year++) {
-      years.push(<option key={year} value={year}>{year}</option>);
-    }
-
-    // set up labels/type options
-    const options = [
-      {
-        type: 'TAVG',
-        title: `Monthly Temperature F${deg.props.children}`
-      },
-      {
-        type: 'PRCP',
-        title: 'Monthly Precipation (inches)'
-      },
-      {
-        type: 'SNOW',
-        title: 'Monthly Snowfall (inches)'
+    // No need to call update/resize, Chart.js handles it
+    // Cleanup on unmount
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
       }
-    ];
+    };
+  }, [props.value, props.compare, props.type, props.year]);
 
-    const label = options.filter(l => this.props.type == l.type);
-    const types = options.map((opt, i) => <option key={i} value={opt.type}>{opt.title}</option>);
-                
-
-    return (
-      <div className="chart">
-        <h1>{label[0].title} Washington, DC </h1>
-        <div className="change-chart-wrapper">
-          <select value={this.props.type} onChange={this.props.onChange}>
-            {types}
-          </select>
-
-          <select value={this.props.year} onChange={this.props.changeYear}>
-            {years}
-          </select>
-        </div>
-        <div className="chart-container" style={{position:'relative', width: '44vw', margin: '0 auto'}}>
-          <canvas id="temp-chart" width="500" height="500"></canvas>
-        </div>
-      </div>
-
-    );
+  // create date options
+  const start = 1958;
+  const end = new Date().getFullYear();
+  const years = [];
+  for (let year = start; year <= end; year++) {
+    years.push(<option key={year} value={year}>{year}</option>);
   }
-}
+
+  // set up labels/type options
+  const deg = <span>&#176;</span>;
+  const options = [
+    {
+      type: 'TAVG',
+      title: `Monthly Temperature F${deg.props.children}`
+    },
+    {
+      type: 'PRCP',
+      title: 'Monthly Precipation (inches)'
+    },
+    {
+      type: 'SNOW',
+      title: 'Monthly Snowfall (inches)'
+    }
+  ];
+  const label = options.filter(l => props.type === l.type);
+  const types = options.map((opt, i) => <option key={i} value={opt.type}>{opt.title}</option>);
+
+  return (
+    <div className="chart">
+      <h1>{label[0].title} Washington, DC </h1>
+      <div className="change-chart-wrapper">
+        <select value={props.type} onChange={props.onChange}>
+          {types}
+        </select>
+        <select value={props.year} onChange={props.changeYear}>
+          {years}
+        </select>
+      </div>
+      <div className="chart-container" style={{position:'relative', width: '44vw', margin: '0 auto'}}>
+        <canvas ref={chartRef} id="temp-chart" width="500" height="500"></canvas>
+      </div>
+    </div>
+  );
+};
+
+export default WeatherChart;
