@@ -51,6 +51,28 @@ const WeatherChart = (props) => {
       chartInstance.current.destroy();
     }
 
+    // Fill missing months by checking which months are present in the data
+    const fillMissingMonths = (data, dates) => {
+      // Map from month index (0-11) to value
+      const monthMap = {};
+      dates.forEach((date, idx) => {
+        const d = new Date(date);
+        if (!isNaN(d)) {
+          const month = d.getMonth();
+          monthMap[month] = parseFloat(data[idx]);
+        }
+      });
+      // Fill array with value if present, else null
+      return Array.from({ length: 12 }, (_, i) =>
+        monthMap.hasOwnProperty(i) ? monthMap[i] : null
+      );
+    };
+
+    dataArr = fillMissingMonths(dataArr, dateArr);
+    compareArr = fillMissingMonths(compareArr, compareDate);
+
+    // console.log(dataArr, dateArr, compareArr, compareDate);
+
     chartInstance.current = new Chart(ctx, {
       type: 'line',
       responsive: false,
@@ -66,7 +88,7 @@ const WeatherChart = (props) => {
             borderWidth: 2
           },
           {
-            label: `${label[0].typeTitle} 2020`,
+            label: `${label[0].typeTitle} 2024`,
             data: compareArr,
             fill: false,
             backgroundColor: [
@@ -144,6 +166,7 @@ const WeatherChart = (props) => {
   return (
     <div className="chart">
       <h1>{label[0].title} Washington, DC </h1>
+      <p>Data pulled from the National Arboretum</p>
       <div className="change-chart-wrapper">
         <select value={props.type} onChange={props.onChange}>
           {types}
