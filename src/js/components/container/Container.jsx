@@ -8,38 +8,37 @@ const Container = () => {
   const [type, setType] = useState('TAVG');
 
   const getData = async (startdate, enddate, comparestart, compareend, type) => {
-    const dc = 'FIPS:11';
-    const token = 'CsgMDhKauNyJczMlffoEibhLIPkiQXDj';
-    const url = `https://www.ncdc.noaa.gov/cdo-web/api/v2/stations?locationid=${dc}`;
-    const datatypeCall = await fetch(url, {
-      headers: { token }
-    });
-    const datatype = await datatypeCall.json();
-    const station = datatype.results[22].id;
+    // get dc station
+    const stationsRes = await fetch('http://localhost:3000/stations');
+    const stationsData = await stationsRes.json();
+    const station = stationsData.results[22].id;
+    console.log(stationsData)
 
-    const datasetCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/datasets?stationid=${station}`, {
-      headers: { token }
-    });
-    const dataset = await datasetCall.json();
+    // 22 station name: "NATIONAL ARBORETUM DC, DC US"
+    const datasetsRes = await fetch(`http://localhost:3000/datasets?station=${station}`);
+    const datasetsData = await datasetsRes.json();
+    const datasetId = datasetsData.results[1].id;
+    console.log(datasetsData)
 
-    if (dataset) {
-      const call = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${station}&datasetid=${dataset.results[1].id}&startdate=${startdate}&enddate=${enddate}&units=standard&limit=1000&datatypeid=${type}`,
-        { headers: { token } })
-        .catch(err => console.log(err));
-      const data = await call.json();
-      setRes(data.results);
+    const dataRes = await fetch(
+      `http://localhost:3000/weather-data?station=${station}&datasetid=${datasetId}&startdate=${startdate}&enddate=${enddate}&type=${type}`
+    );
+    const data = await dataRes.json();
+    console.log(data)
+    setRes(data.results);
 
-      const compareCall = await fetch(`https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${station}&datasetid=${dataset.results[1].id}&startdate=${comparestart}&enddate=${compareend}&units=standard&limit=1000&datatypeid=${type}`,
-        { headers: { token } })
-        .catch(err => console.log(err));
-      const compareData = await compareCall.json();
-      setCompare(compareData.results);
-    }
+    // 4. Get weather data for comparison year
+    const compareRes = await fetch(
+      `http://localhost:3000/weather-data?station=${station}&datasetid=${datasetId}&startdate=${comparestart}&enddate=${compareend}&type=${type}`
+    );
+    const compareData = await compareRes.json();
+    console.log(compareData)
+    setCompare(compareData.results);
   };
 
   useEffect(() => {
-    console.log('fetching data...');
-    getData(`${year}-01-01`, `${year}-12-31`, '2020-01-01', '2020-12-31', type);
+    // console.log('fetching data...');
+    getData(`${year}-01-01`, `${year}-12-31`, '2022-01-01', '2022-12-01', type);
   }, [year, type]);
 
   const changeChart = (e) => {
