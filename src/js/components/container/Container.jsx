@@ -7,32 +7,40 @@ const Container = () => {
   const [year, setYear] = useState('1958');
   const [type, setType] = useState('TAVG');
 
+  const getBaseUrl = () => {
+    return process.env.NODE_ENV === 'production'
+      ? 'https://dc-climate-change.vercel.app'
+      : 'http://localhost:3000';
+  };
+
   const getData = async (startdate, enddate, comparestart, compareend, type) => {
+    const baseUrl = getBaseUrl();
+
     // get dc station
-    const stationsRes = await fetch('http://localhost:3000/stations');
+    const stationsRes = await fetch(`${baseUrl}/stations`);
     const stationsData = await stationsRes.json();
     const station = stationsData.results[22].id;
-    console.log(stationsData)
+    console.log(stationsData);
 
     // 22 station name: "NATIONAL ARBORETUM DC, DC US"
-    const datasetsRes = await fetch(`http://localhost:3000/datasets?station=${station}`);
+    const datasetsRes = await fetch(`${baseUrl}/datasets?station=${station}`);
     const datasetsData = await datasetsRes.json();
     const datasetId = datasetsData.results[1].id;
-    console.log(datasetsData)
+    console.log(datasetsData);
 
     const dataRes = await fetch(
-      `http://localhost:3000/weather-data?station=${station}&datasetid=${datasetId}&startdate=${startdate}&enddate=${enddate}&type=${type}`
+      `${baseUrl}/weather-data?station=${station}&datasetid=${datasetId}&startdate=${startdate}&enddate=${enddate}&type=${type}`
     );
     const data = await dataRes.json();
-    console.log(data)
+    console.log(data);
     setRes(data.results);
 
     // 4. Get weather data for comparison year
     const compareRes = await fetch(
-      `http://localhost:3000/weather-data?station=${station}&datasetid=${datasetId}&startdate=${comparestart}&enddate=${compareend}&type=${type}`
+      `${baseUrl}/weather-data?station=${station}&datasetid=${datasetId}&startdate=${comparestart}&enddate=${compareend}&type=${type}`
     );
     const compareData = await compareRes.json();
-    console.log(compareData)
+    console.log(compareData);
     setCompare(compareData.results);
   };
 
