@@ -1,13 +1,10 @@
 {
   "name": "dc-climate-change-api",
   "version": "1.0.0",
-  "description": "API for dc-climate-change",
-  "type": "module",
+  "description": "Server for dc climate change app because NOAA API is wont allow CORS requests :(",
+  "main": "index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -18,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/DCU4/dc-climate-change/issues"
   },
-  "homepage": "https://github.com/DCU4/dc-climate-change/"
+  "homepage": "https://github.com/DCU4/dc-climate-change/",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6"
+  }
 }
