@@ -138,7 +138,7 @@ const WeatherChart = (props) => {
 
   // create date options
   const start = 1958;
-  const end = new Date().getFullYear();
+  const end = 2022;
   const years = [];
   for (let year = start; year <= end; year++) {
     years.push(<option key={year} value={year}>{year}</option>);
